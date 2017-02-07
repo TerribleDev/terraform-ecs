@@ -8,7 +8,6 @@ resource "aws_ecs_cluster" "cluster" {
 }
 
 resource "aws_launch_configuration" "ecs" {
-  name                 = "ecs-${aws_ecr_repository.registry.name}"
   /*this is the ami for aws irl, we should probably take this as a var or have a map of all the images*/
   image_id             = "ami-48f9a52e"
   instance_type        = "m3.medium"
@@ -16,6 +15,9 @@ resource "aws_launch_configuration" "ecs" {
   security_groups      = ["${aws_security_group.allow_all.id}"]
   iam_instance_profile = "${aws_iam_instance_profile.ecs.name}"
   user_data            = "#!/bin/bash\necho ECS_CLUSTER=${aws_ecr_repository.cluster.name} > /etc/ecs/ecs.config"
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 /**
@@ -30,6 +32,9 @@ resource "aws_autoscaling_group" "ecs" {
   min_size             = 1
   max_size             = 10
   desired_capacity     = 3
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 
