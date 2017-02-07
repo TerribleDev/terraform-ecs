@@ -1,0 +1,23 @@
+[
+    
+    {
+        "name": "${container_name}",
+        "image": "${registry}:${container_name}-latest",
+        "cpu": 300,
+        "memory": 300,
+        "links": [],
+        "portMappings": [
+            {
+                "containerPort": ${container_port},
+                "hostPort": ${host_port},
+                "protocol": "tcp"
+            }
+        ],
+        "essential": true,
+        "entryPoint": [],
+        "command": [],
+        "environment": [],
+        "mountPoints": [],
+        "volumesFrom": []
+    }
+]
